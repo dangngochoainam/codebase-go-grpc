@@ -1,0 +1,48 @@
+syntax = "proto3";
+package pb;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "product.proto";
+import "buf/validate/validate.proto";
+
+option go_package = "github.com/dangngochoainam/codebase-go-grpc/pb";
+
+service API {
+  rpc HealthCheck (google.protobuf.Empty) returns (HelloReply) {
+    option (google.api.http) = {
+      get: "/v1/health-check"
+    };
+  }
+
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/say-hello"
+      body: "*"
+    };
+  }
+
+  rpc CreateManyProducts (CreateManyProductsRequest) returns (CreateManyProductsResponse) {
+    option (google.api.http) = {
+      post: "/v1/products/batch"
+      body: "*"
+    };
+  }
+
+  rpc ListProducts (ListProductsRequest) returns (ListProductsResponse) {
+    option (google.api.http) = {
+      get: "/v1/products"
+    };
+  }
+
+}
+
+// The request message containing the user's name.
+message HelloRequest {
+  string name = 1 [(buf.validate.field).required = true];
+}
+
+// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}

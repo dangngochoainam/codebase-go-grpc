@@ -1,0 +1,29 @@
+services:
+  codebase-go-grpc:
+    container_name: codebase-go-grpc-debug
+    build:
+      context: .
+      dockerfile: ./Dockerfile.debug
+    volumes:
+      - ./:/app
+      # mount gopkg into container
+      - ../gopkg:/gopkg
+    ports:
+      - "50060:50050" # gRPC server
+      - "50061:50051" # HTTP gateway
+      - "2302:2302" # Delve debugger port
+    networks:
+      - docker_stack
+    stdin_open: true
+    tty: true
+    entrypoint: ["bash"]
+    environment:
+      DATABASE_POSTGRES__HOST: postgres
+      DATABASE_POSTGRES__PORT: 5432
+    # cpus: 1
+    # mem_limit: 512M
+    # mem_reservation: 256M
+
+networks:
+  docker_stack:
+    external: true
