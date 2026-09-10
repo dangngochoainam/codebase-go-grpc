@@ -3,6 +3,8 @@ package configs
 import (
 	"fmt"
 	"time"
+
+	"github.com/dangngochoainam/gopkg/confighelper"
 )
 
 // yaml format
@@ -69,7 +71,7 @@ type (
 func LoadConfig() (*Config, error) {
 	configMap := &Config{}
 
-	err := Load(configMap, defaultConfig)
+	err := confighelper.Load(configMap, defaultConfig)
 	if err != nil {
 		fmt.Printf("Error while load config, err: %v", err)
 		return nil, err
